@@ -50,13 +50,12 @@
 ","                     {printf("TOKEN_COMMA            %s\n", yytext);}
 "//".*                  {printf("TOKEN_COMMENT          %s\n", yytext);}
 ("+"?"-"?[0-9]+)        {printf("TOKEN_DECIMALCONST     %s\n", yytext);}
-("0x"[0-9a-fA-F]+)       {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);}
+("0x"[0-9a-fA-F]+)      {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);}
+\".*\"                  {printf("TOKEN_STRINGCONST      %s\n", yytext);}
+\'.\'                   {printf("TOKEN_CHARCONST        %s\n", yytext);}
 ("\n")+                 {printf("TOKEN_WHITESPACE       [newline]\n");}
 ("\t")+                 {printf("TOKEN_WHITESPACE       [tab]\n");}
 (" ")+                  {printf("TOKEN_WHITESPACE       [space]\n");}
-
-
-
 %%
 
 
