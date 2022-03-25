@@ -10,7 +10,7 @@ main(){
     int _abc_32ew_ = +3;
     int __a_32 = 0x32fab;
     int str = "salasmdf asldf; sjifssd; f";
-    int str2 = '!';
+    int str2 = '\n';
 
     // return main
     return;
