@@ -28,10 +28,26 @@
 "*"                     {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
 "/"                     {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
 "%"                     {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-
-
-
-
+"&&"                    {printf("TOKEN_CONDITIONOP      %s\n", yytext);}
+"||"                    {printf("TOKEN_CONDITIONOP      %s\n", yytext);}
+"<="                    {printf("TOKEN_RELATIONOP       %s\n", yytext);}
+"<"                     {printf("TOKEN_RELATIONOP       %s\n", yytext);}
+">"                     {printf("TOKEN_RELATIONOP       %s\n", yytext);}
+">="                    {printf("TOKEN_RELATIONOP       %s\n", yytext);}
+"!="                    {printf("TOKEN_EQUALITYOP       %s\n", yytext);}
+"=="                    {printf("TOKEN_EQUALITYOP       %s\n", yytext);}
+"="                     {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+"+="                    {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+"-="                    {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+"!"                     {printf("TOKEN_LOGICOP          %s\n", yytext);}
+"("                     {printf("TOKEN_LP               %s\n", yytext);}
+")"                     {printf("TOKEN_RP               %s\n", yytext);}
+"{"                     {printf("TOKEN_LCB              %s\n", yytext);}
+"}"                     {printf("TOKEN_RCB              %s\n", yytext);}
+"["                     {printf("TOKEN_LB               %s\n", yytext);}
+"]"                     {printf("TOKEN_RB               %s\n", yytext);}
+";"                     {printf("TOKEN_SEMICOLON        %s\n", yytext);}
+","                     {printf("TOKEN_COMMA            %s\n", yytext);}
 
 %%
 
