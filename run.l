@@ -49,6 +49,10 @@
 ";"                     {printf("TOKEN_SEMICOLON        %s\n", yytext);}
 ","                     {printf("TOKEN_COMMA            %s\n", yytext);}
 
+("\n")+                 {printf("TOKEN_WHITESPACE       [newline]\n");}
+("\t")+                 {printf("TOKEN_WHITESPACE       [tab]\n");}
+(" ")+                  {printf("TOKEN_WHITESPACE       [space]\n");}
+
 %%
 
 
