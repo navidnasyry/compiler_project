@@ -1,6 +1,8 @@
 %{
     //definitions
     #include <stdio.h>
+    #include <string.h>
+    int lineCounter = 1;
 
 %}
 
@@ -53,9 +55,11 @@
 ("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);}
 \"[ -~]*\"                                                  {printf("TOKEN_STRINGCONST      %s\n", yytext);}
 \'(([ -~])|(\\"n")|(\\"t")|(\\\')|(\\\"))\'                 {printf("TOKEN_CHARCONST        %s\n", yytext);}
-("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");}
+("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);}
 ("\t")+                                                     {printf("TOKEN_WHITESPACE       [tab]\n");}
 (" ")+                                                      {printf("TOKEN_WHITESPACE       [space]\n");}
+.                                                           {printf("Error in line          %d\n", lineCounter);}
+
 %%
 
 
