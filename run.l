@@ -58,6 +58,7 @@
 ("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);}
 ("\t")+                                                     {printf("TOKEN_WHITESPACE       [tab]\n");}
 (" ")+                                                      {printf("TOKEN_WHITESPACE       [space]\n");}
+([0-9]+[a-zA-Z_]+)+                                         {printf("Error in line          %d : wrong id definition\n", lineCounter);}
 .                                                           {printf("Error in line          %d\n", lineCounter);}
 
 %%
