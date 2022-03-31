@@ -2,7 +2,11 @@
     //definitions
     #include <stdio.h>
     #include <string.h>
+    #include <stdlib.h>
     int lineCounter = 1;
+    long int MAX_INT = 2147483647;
+    long int MIN_INT = -2147483648;
+    char * ptr;
 
 %}
 
@@ -51,8 +55,8 @@
 ";"                                                         {printf("TOKEN_SEMICOLON        %s\n", yytext);}
 ","                                                         {printf("TOKEN_COMMA            %s\n", yytext);}
 "//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);}
-("+"?"-"?[0-9]+)                                            {printf("TOKEN_DECIMALCONST     %s\n", yytext);}
-("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);}
+("+"?"-"?[0-9]+)                                            {if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) printf("TOKEN_DECIMALCONST     %s\n", yytext); else printf("Error in line       %d: the value out of range\n", lineCounter   );}
+("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext); }
 \"[ -~]*\"                                                  {printf("TOKEN_STRINGCONST      %s\n", yytext);}
 \'(([ -~])|(\\"n")|(\\"t")|(\\\')|(\\\"))\'                 {printf("TOKEN_CHARCONST        %s\n", yytext);}
 ("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);}

@@ -52,4 +52,6 @@ main(){
 int myFunc(int num1= 7, boolean b1 = false ){
  return 1;
 }
-int y=+2++2
+int y=+2++2;
+int xx = 9999999999999999999999999;
+int x[4] = {1,2,3,4};
