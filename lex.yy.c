@@ -1067,7 +1067,7 @@ YY_RULE_SETUP
 case 43:
 YY_RULE_SETUP
 #line 59 "run.l"
-{if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) printf("TOKEN_DECIMALCONST     %s\n", yytext); else printf("Error in line       %d: the value out of range\n", lineCounter   );}
+{if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) printf("TOKEN_DECIMALCONST     %s\n", yytext); else printf("Error in line          %d: the value out of range\n", lineCounter   );}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
