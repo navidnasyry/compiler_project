@@ -35,6 +35,9 @@
 %token<str> TOKEN_IFCONDITION
 %token<str> TOKEN_LOOP
 %token<str> TOKEN_ASSIGNOP
+%token<str> TOKEN_RETURN
+%token<str> TOKEN_BREAKSTMT
+%token<str> TOKEN_CONTINUESTMT
 
 
 
@@ -92,8 +95,15 @@
                 | method_call TOKEN_SEMICOLON
                 | TOKEN_IFCONDITION TOKEN_RP expr TOKEN_LP else_stmt
                 | TOKEN_LOOP id TOKEN_ASSIGNOP expr TOKEN_COMMA expr block
+                | TOKEN_RETURN ret_stmt
+                | TOKEN_BREAKSTMT
+                | TOKEN_CONTINUESTMT
+                | block
                 |/*epsilon*/ { }
 
+    ret_stmt:
+                expr 
+                |/*epsilon*/ { }
     else_stmt:
                 block 
                 |/*epsilon*/ { }
@@ -101,10 +111,13 @@
     location:
 
     assign_op:
+                TOKEN_ASSIGNOP
+                // Why no diffrence between = += -= 
 
     expr:
 
     method_call:
+                
 
     type:
             TOKEN_INT
