@@ -29,29 +29,29 @@
 "Program"                                                   {printf("TOKEN_PROGRAMCLASS     %s\n", yytext);}
 "main"                                                      {printf("TOKEN_MAINFUNC         %s\n", yytext);}
 ([a-zA-Z_]+[0-9]*)+                                         {printf("TOKEN_ID               %s\n", yytext);}
-"+"                                                         {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-"-"                                                         {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-"*"                                                         {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-"/"                                                         {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-"%"                                                         {printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
-"&&"                                                        {printf("TOKEN_CONDITIONOP      %s\n", yytext);}
-"||"                                                        {printf("TOKEN_CONDITIONOP      %s\n", yytext);}
-"<="                                                        {printf("TOKEN_RELATIONOP       %s\n", yytext);}
-"<"                                                         {printf("TOKEN_RELATIONOP       %s\n", yytext);}
-">"                                                         {printf("TOKEN_RELATIONOP       %s\n", yytext);}
-">="                                                        {printf("TOKEN_RELATIONOP       %s\n", yytext);}
-"!="                                                        {printf("TOKEN_EQUALITYOP       %s\n", yytext);}
-"=="                                                        {printf("TOKEN_EQUALITYOP       %s\n", yytext);}
-"="                                                         {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
-"+="                                                        {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
-"-="                                                        {printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+"+"                                                         {printf("TOKEN_ARITHMATICOP_ADD     %s\n", yytext);}
+"-"                                                         {printf("TOKEN_ARITHMATICOP_SUB    %s\n", yytext);}
+"*"                                                         {printf("TOKEN_ARITHMATICOP_MUL     %s\n", yytext);}
+"/"                                                         {printf("TOKEN_ARITHMATICOP_DIV     %s\n", yytext);}
+"%"                                                         {printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);}
+"&&"                                                        {printf("TOKEN_CONDITIONOP_AND      %s\n", yytext);}
+"||"                                                        {printf("TOKEN_CONDITIONOP_OR      %s\n", yytext);}
+"<="                                                        {printf("TOKEN_RELATIONOP_SE       %s\n", yytext);}
+"<"                                                         {printf("TOKEN_RELATIONOP_S       %s\n", yytext);}
+">"                                                         {printf("TOKEN_RELATIONOP_B       %s\n", yytext);}
+">="                                                        {printf("TOKEN_RELATIONOP_BE       %s\n", yytext);}
+"!="                                                        {printf("TOKEN_EQUALITYOP_NE       %s\n", yytext);}
+"=="                                                        {printf("TOKEN_EQUALITYOP_E       %s\n", yytext);}
+"="                                                         {printf("TOKEN_ASSIGNOP_ASS         %s\n", yytext);}
+"+="                                                        {printf("TOKEN_ASSIGNOP_ADD         %s\n", yytext);}
+"-="                                                        {printf("TOKEN_ASSIGNOP_SUB         %s\n", yytext);}
 "!"                                                         {printf("TOKEN_LOGICOP          %s\n", yytext);}
 "("                                                         {printf("TOKEN_LP               %s\n", yytext);}
 ")"                                                         {printf("TOKEN_RP               %s\n", yytext);}
 "{"                                                         {printf("TOKEN_LCB              %s\n", yytext);}
 "}"                                                         {printf("TOKEN_RCB              %s\n", yytext);}
-"["                                                         {printf("TOKEN_LB               %s\n", yytext);}
 "]"                                                         {printf("TOKEN_RB               %s\n", yytext);}
+"["                                                         {printf("TOKEN_LB               %s\n", yytext);}
 ";"                                                         {printf("TOKEN_SEMICOLON        %s\n", yytext);}
 ","                                                         {printf("TOKEN_COMMA            %s\n", yytext);}
 "//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);}
@@ -76,7 +76,7 @@ int yywrap() {}
 int main() {
 
     FILE * f = fopen("code.x", "r");
-    yyin = f;
+    //yyin = f;
 
     yylex();
 }

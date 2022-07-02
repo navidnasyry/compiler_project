@@ -364,7 +364,7 @@ static const flex_int16_t yy_accept[131] =
     {   0,
         0,    0,   53,   51,   48,   47,   49,   33,   51,   21,
        51,   51,   34,   35,   19,   17,   41,   18,   20,   43,
-       43,   40,   25,   30,   26,   16,   16,   38,   39,   16,
+       43,   40,   25,   30,   26,   16,   16,   39,   38,   16,
        16,   16,   16,   16,   16,   16,   16,   16,   36,   51,
        37,   48,   47,   49,   28,    0,   45,   22,    0,    0,
         0,   43,   31,   32,   42,   43,   50,   50,   24,   29,
@@ -937,82 +937,82 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 33 "run.l"
-{printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
+{printf("TOKEN_ARITHMATICOP_ADD     %s\n", yytext);}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 34 "run.l"
-{printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
+{printf("TOKEN_ARITHMATICOP_SUB    %s\n", yytext);}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 35 "run.l"
-{printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
+{printf("TOKEN_ARITHMATICOP_MUL     %s\n", yytext);}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 36 "run.l"
-{printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
+{printf("TOKEN_ARITHMATICOP_DIV     %s\n", yytext);}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 37 "run.l"
-{printf("TOKEN_ARITHMATICOP     %s\n", yytext);}
+{printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 38 "run.l"
-{printf("TOKEN_CONDITIONOP      %s\n", yytext);}
+{printf("TOKEN_CONDITIONOP_AND      %s\n", yytext);}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 39 "run.l"
-{printf("TOKEN_CONDITIONOP      %s\n", yytext);}
+{printf("TOKEN_CONDITIONOP_OR      %s\n", yytext);}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 40 "run.l"
-{printf("TOKEN_RELATIONOP       %s\n", yytext);}
+{printf("TOKEN_RELATIONOP_SE       %s\n", yytext);}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 41 "run.l"
-{printf("TOKEN_RELATIONOP       %s\n", yytext);}
+{printf("TOKEN_RELATIONOP_S       %s\n", yytext);}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 42 "run.l"
-{printf("TOKEN_RELATIONOP       %s\n", yytext);}
+{printf("TOKEN_RELATIONOP_B       %s\n", yytext);}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 43 "run.l"
-{printf("TOKEN_RELATIONOP       %s\n", yytext);}
+{printf("TOKEN_RELATIONOP_BE       %s\n", yytext);}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 44 "run.l"
-{printf("TOKEN_EQUALITYOP       %s\n", yytext);}
+{printf("TOKEN_EQUALITYOP_NE       %s\n", yytext);}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 45 "run.l"
-{printf("TOKEN_EQUALITYOP       %s\n", yytext);}
+{printf("TOKEN_EQUALITYOP_E       %s\n", yytext);}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 46 "run.l"
-{printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+{printf("TOKEN_ASSIGNOP_ASS         %s\n", yytext);}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 47 "run.l"
-{printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+{printf("TOKEN_ASSIGNOP_ADD         %s\n", yytext);}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 48 "run.l"
-{printf("TOKEN_ASSIGNOP         %s\n", yytext);}
+{printf("TOKEN_ASSIGNOP_SUB         %s\n", yytext);}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
@@ -1042,12 +1042,12 @@ YY_RULE_SETUP
 case 38:
 YY_RULE_SETUP
 #line 54 "run.l"
-{printf("TOKEN_LB               %s\n", yytext);}
+{printf("TOKEN_RB               %s\n", yytext);}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 55 "run.l"
-{printf("TOKEN_RB               %s\n", yytext);}
+{printf("TOKEN_LB               %s\n", yytext);}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
@@ -2132,7 +2132,7 @@ int yywrap() {}
 int main() {
 
     FILE * f = fopen("code.x", "r");
-    yyin = f;
+    //yyin = f;
 
     yylex();
 }
