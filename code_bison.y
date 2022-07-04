@@ -1,13 +1,13 @@
 %{
     
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
+    #include <iostream>
+    #include <string>
+    using namespace std;
 
-
-
-    
-    
+    extern int yylex();
+    int yyerror(const char* message);
+    extern FILE* yyin;
+    extern FILE* yyout;
     
 %}
 
@@ -62,31 +62,89 @@
 %token<str> TOKEN_LOGICOP
 
 
+%left TOKEN_CONDITIONOP_OR
+%left TOKEN_CONDITIONOP_AND
+%left TOKEN_ARITHMATICOP_MUL TOKEN_ARITHMATICOP_DIV
+%left TOKEN_ARITHMATICOP_ADD TOKEN_ARITHMATICOP_SUB
+%left TOKEN_ARITHMATICOP_REM
+%left TOKEN_EQUALITYOP_NE
+%left TOKEN_EQUALITYOP_E
+%left TOKEN_RELATIONOP_SE TOKEN_RELATIONOP_S TOKEN_RELATIONOP_B TOKEN_RELATIONOP_BE
+%left TOKEN_LOGICOP
+%left TOKEN_LP TOKEN_RP TOKEN_LB TOKEN_RB 
+//%left TOKEN_INT TOKEN_BOOL TOKEN_CHAR TOKEN_STRING
+
+
+
+/* 
+%type <str> program
+%type <str> field_decl
+%type <str> multi_field
+%type <str> method_decl
+%type <str> header
+%type <str> func_name
+%type <str> func_args
+%type <str> arg
+%type <str> block
+%type <str> var_decl
+%type <str> statement
+%type <str> ret_stmt
+%type <str> else_stmt
+%type <str> location
+%type <str> assign_op
+%type <str> expr
+%type <str> method_call
+%type <str> multi_expr
+%type <str> multi_expr_inner
+%type <str> multi_callout_args
+%type <str> callout_args
+%type <str> method_name
+%type <str> bin_op
+%type <str> arith_op
+%type <str> rel_op
+%type <str> eq_op
+%type <str> cond_op
+%type <str> type
+%type <str> multi_id
+%type <str> literal
+%type <str> int_literal
+%type <str> decimal_literal
+%type <str> hex_literal
+%type <str> bool_literal
+%type <str> char_literal
+%type <str> string_literal */
+
 
 
 
 %%
     program:    // class program {}
-                TOKEN_CLASS TOKEN_Program '{' field_decl method_decl '}'
+                TOKEN_CLASS TOKEN_Program TOKEN_LCB decl TOKEN_RCB
                 |
                 ;
-    field_decl: //int a,b,c[10],b,c;
-                type multi_field TOKEN_SEMICOLON
+    decl:
+                field_decl method_decl
                 | /*epsilon*/ {  }
                 ;
 
+    field_decl: //int a,b,c[10],b,c;
+                type id multi_field TOKEN_SEMICOLON
+                ;
+
     multi_field://a,b,c[10],b,c[20]
-                id TOKEN_COMMA multi_field
-                | id
-                | id TOKEN_LB int_literal TOKEN_RB TOKEN_COMMA multi_field
-                | id TOKEN_LB int_literal TOKEN_RB
+                 TOKEN_COMMA id multi_field
+                | TOKEN_LB int_literal TOKEN_RB TOKEN_COMMA id multi_field
+                | TOKEN_LB int_literal TOKEN_RB
+                | /*epsilon*/ {  }
+
 
     method_decl://int main(){} // int func(int a, int b){}
                 header func_name TOKEN_LP func_args TOKEN_RP block
                 | /*epsilon*/ { }
     
     header:     //int//bool//void
-                type
+                TOKEN_INT
+                | TOKEN_BOOL
                 | TOKEN_VOID
 
     func_name:  //func //main
@@ -136,9 +194,12 @@
                 ;
 
     location:
-                id
-                | id TOKEN_LB expr TOKEN_RB
+                id location_helper
                 ;
+                
+    location_helper:
+                TOKEN_LB expr TOKEN_RB
+                | /*epsilon*/ { }
 
     assign_op:
                 TOKEN_ASSIGNOP_ASS
@@ -150,11 +211,36 @@
                 location //a//a[3]
                 | method_call //
                 | literal //all literals
-                | expr bin_op expr //
+                //| expr bin_op expr // 1+2-4 > 4+2-1
+                | expr TOKEN_ARITHMATICOP_ADD expr
+                | expr TOKEN_ARITHMATICOP_SUB expr
+                | expr TOKEN_ARITHMATICOP_MUL expr
+                | expr TOKEN_ARITHMATICOP_DIV expr
+                | expr TOKEN_ARITHMATICOP_REM expr
+                | expr TOKEN_RELATIONOP_SE expr
+                | expr TOKEN_RELATIONOP_S expr
+                | expr TOKEN_RELATIONOP_B expr
+                | expr TOKEN_RELATIONOP_BE expr
+                | expr TOKEN_EQUALITYOP_E expr
+                | expr TOKEN_EQUALITYOP_NE expr
+                | expr TOKEN_CONDITIONOP_AND expr
+                | expr TOKEN_CONDITIONOP_OR expr
                 | TOKEN_ARITHMATICOP_SUB expr // -a
                 | TOKEN_LOGICOP expr // !true
                 | TOKEN_LP expr TOKEN_RP // (expr)
                 ;
+
+    
+
+    
+    /* expr_help: 
+                expr_help bin_op expr_help_2
+                expr_help_2
+    expr_help_2:
+                expr */
+
+//expr bin_op expr
+
 
     method_call:
                 method_name TOKEN_LP multi_expr TOKEN_RP //func(a,b,1)
@@ -190,7 +276,7 @@
                 id {}//function names
                 ;
 
-    bin_op:
+    /* bin_op:
                 arith_op
                 | rel_op
                 | eq_op
@@ -219,7 +305,7 @@
     cond_op:
                 TOKEN_CONDITIONOP_AND
                 | TOKEN_CONDITIONOP_OR
-                ;
+                ; */
 
     type:
                 TOKEN_INT
@@ -273,13 +359,17 @@
 
 int main(int argc, char **argv)
 {
-	FILE * fr = fopen(argv[1], "r");
-	yyin = fr;
+	yyin = fopen(argv[1], "r");
+	yyout = fopen(argv[2], "w");
 	yyparse();
 	return 0;
 }
 
 
+int yyerror(const char* message) {
+    cout << message << endl;
+    return 0;
+}
 
 
 
