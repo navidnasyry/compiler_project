@@ -557,7 +557,7 @@ int main(int argc, char **argv)
 
 
 int yyerror(const char* message) {
-    cout << "WELCOME TO YOU COMPILER :)"<<endl;
+    cout << "\n\n================ERROR===============\n\n"<<endl;
     cout << message << endl;
     return 0;
 }

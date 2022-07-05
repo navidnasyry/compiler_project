@@ -54,17 +54,17 @@
 "]"                                                         {printf("TOKEN_RB               %s\n", yytext);return TOKEN_RB;}
 "["                                                         {printf("TOKEN_LB               %s\n", yytext);return TOKEN_LB;}
 ";"                                                         {printf("TOKEN_SEMICOLON        %s\n", yytext);return TOKEN_SEMICOLON;}
-","                                                         {printf("TOKEN_COMMA            %s\n", yytext);return TOKEN_COMMA;}
-"//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);return TOKEN_COMMENT;}
+","                                                         {printf("TOKEN_COMMA            %s\n", yytext);}
+"//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);}
 ("+"?"-"?[0-9]+)                                            {if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );}
 ("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST;}
 \"[ -~]*\"                                                  {printf("TOKEN_STRINGCONST      %s\n", yytext);return TOKEN_STRINGCONST;}
 \'(([ -~])|(\\"n")|(\\"t")|(\\\')|(\\\"))\'                 {printf("TOKEN_CHARCONST        %s\n", yytext);return TOKEN_CHARCONST;}
-("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);return TOKEN_WHITESPACE;}
-("\t")+                                                     {printf("TOKEN_WHITESPACE       [tab]\n");return TOKEN_WHITESPACE;}
-(" ")+                                                      {printf("TOKEN_WHITESPACE       [space]\n");return TOKEN_WHITESPACE;}
-([0-9]+[a-zA-Z_]+)+                                         {printf("Error in line          %d : wrong id definition\n", lineCounter);return TOKEN_WHITESPACE;}
-.                                                           {printf("Error in line          %d\n", lineCounter);return TOKEN_WHITESPACE;}
+("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);}
+("\t")+                                                     {printf("TOKEN_WHITESPACE       [tab]\n");}
+(" ")+                                                      {printf("TOKEN_WHITESPACE       [space]\n");}
+([0-9]+[a-zA-Z_]+)+                                         {printf("Error in line          %d : wrong id definition\n", lineCounter);}
+.                                                           {printf("Error in line          %d\n", lineCounter);}
 
 %%
 
