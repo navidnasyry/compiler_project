@@ -34,8 +34,8 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_YY_CODE_BISON_TAB_H_INCLUDED
-# define YY_YY_CODE_BISON_TAB_H_INCLUDED
+#ifndef YY_YY_APP_HPP_INCLUDED
+# define YY_YY_APP_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -108,7 +108,7 @@ union YYSTYPE
     int number;
     
 
-#line 112 "code_bison.tab.h"
+#line 112 "app.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -121,4 +121,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_CODE_BISON_TAB_H_INCLUDED  */
+#endif /* !YY_YY_APP_HPP_INCLUDED  */

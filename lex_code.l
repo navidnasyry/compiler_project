@@ -1,7 +1,7 @@
 %{
     //definitions
     #include <iostream>
-    #include "bison.tab.y"
+    #include "app.hpp"
     using namespace std;
 
     int lineCounter = 1;
@@ -34,7 +34,7 @@
 "-"                                                         {printf("TOKEN_ARITHMATICOP_SUB    %s\n", yytext);return TOKEN_ARITHMATICOP_SUB;}
 "*"                                                         {printf("TOKEN_ARITHMATICOP_MUL     %s\n", yytext);return TOKEN_ARITHMATICOP_MUL;}
 "/"                                                         {printf("TOKEN_ARITHMATICOP_DIV     %s\n", yytext);return TOKEN_ARITHMATICOP_DIV;}
-"%"                                                         {printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);return TOKEN_ARITHMATICOP_REM}
+"%"                                                         {printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);return TOKEN_ARITHMATICOP_REM;}
 "&&"                                                        {printf("TOKEN_CONDITIONOP_AND      %s\n", yytext);return TOKEN_CONDITIONOP_AND;}
 "||"                                                        {printf("TOKEN_CONDITIONOP_OR      %s\n", yytext);return TOKEN_CONDITIONOP_OR;}
 "<="                                                        {printf("TOKEN_RELATIONOP_SE       %s\n", yytext);return TOKEN_RELATIONOP_SE;}
@@ -56,8 +56,8 @@
 ";"                                                         {printf("TOKEN_SEMICOLON        %s\n", yytext);return TOKEN_SEMICOLON;}
 ","                                                         {printf("TOKEN_COMMA            %s\n", yytext);return TOKEN_COMMA;}
 "//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);return TOKEN_COMMENT;}
-("+"?"-"?[0-9]+)                                            {if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );return ERROR}
-("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST; }
+("+"?"-"?[0-9]+)                                            {if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );}
+("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST;}
 \"[ -~]*\"                                                  {printf("TOKEN_STRINGCONST      %s\n", yytext);return TOKEN_STRINGCONST;}
 \'(([ -~])|(\\"n")|(\\"t")|(\\\')|(\\\"))\'                 {printf("TOKEN_CHARCONST        %s\n", yytext);return TOKEN_CHARCONST;}
 ("\n")+                                                     {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);return TOKEN_WHITESPACE;}

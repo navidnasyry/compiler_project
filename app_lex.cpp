@@ -1,5 +1,6 @@
+#line 2 "app_lex.cpp"
 
-#line 3 "lex.yy.c"
+#line 4 "app_lex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -564,11 +565,11 @@ int yy_flex_debug = 0;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "run.l"
-#line 2 "run.l"
+#line 1 "lex_code.l"
+#line 2 "lex_code.l"
     //definitions
     #include <iostream>
-    #include "bison.tab.y"
+    #include "app.hpp"
     using namespace std;
 
     int lineCounter = 1;
@@ -576,8 +577,8 @@ char *yytext;
     long int MIN_INT = -2147483648;
     char * ptr;
 
-#line 580 "lex.yy.c"
-#line 581 "lex.yy.c"
+#line 581 "app_lex.cpp"
+#line 582 "app_lex.cpp"
 
 #define INITIAL 0
 
@@ -794,11 +795,11 @@ YY_DECL
 		}
 
 	{
-#line 15 "run.l"
+#line 15 "lex_code.l"
 
-#line 17 "run.l"
+#line 17 "lex_code.l"
     //rules
-#line 802 "lex.yy.c"
+#line 803 "app_lex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -857,266 +858,266 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 18 "run.l"
+#line 18 "lex_code.l"
 {printf("TOKEN_BOOLEANTYPE      %s\n", yytext);return TOKEN_BOOLEANTYPE;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 19 "run.l"
+#line 19 "lex_code.l"
 {printf("TOKEN_BREAKSTMT        %s\n", yytext);return TOKEN_BREAKSTMT;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 20 "run.l"
+#line 20 "lex_code.l"
 {printf("TOKEN_CALLOUT          %s\n", yytext);return TOKEN_CALLOUT;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "run.l"
+#line 21 "lex_code.l"
 {printf("TOKEN_CLASS            %s\n", yytext);return TOKEN_CLASS;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 22 "run.l"
+#line 22 "lex_code.l"
 {printf("TOKEN_CONTINUESTMT     %s\n", yytext);return TOKEN_CONTINUESTMT;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 23 "run.l"
+#line 23 "lex_code.l"
 {printf("TOKEN_ELSECONDITION    %s\n", yytext);return TOKEN_ELSECONDITION;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 24 "run.l"
+#line 24 "lex_code.l"
 {printf("TOKEN_BOOLEANCONST     %s\n", yytext);return TOKEN_BOOLEANCONST;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 25 "run.l"
+#line 25 "lex_code.l"
 {printf("TOKEN_LOOP             %s\n", yytext);return TOKEN_LOOP;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 26 "run.l"
+#line 26 "lex_code.l"
 {printf("TOKEN_IFCONDITION      %s\n", yytext);return TOKEN_IFCONDITION;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 27 "run.l"
+#line 27 "lex_code.l"
 {printf("TOKEN_INTTYPE          %s\n", yytext);return TOKEN_INTTYPE;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 28 "run.l"
+#line 28 "lex_code.l"
 {printf("TOKEN_RETURN           %s\n", yytext);return TOKEN_RETURN;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 29 "run.l"
+#line 29 "lex_code.l"
 {printf("TOKEN_BOOLEANCONST     %s\n", yytext);return TOKEN_BOOLEANCONST;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 30 "run.l"
+#line 30 "lex_code.l"
 {printf("TOKEN_VOIDTYPE         %s\n", yytext);return TOKEN_VOIDTYPE;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 31 "run.l"
+#line 31 "lex_code.l"
 {printf("TOKEN_PROGRAMCLASS     %s\n", yytext);return TOKEN_PROGRAMCLASS;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 32 "run.l"
+#line 32 "lex_code.l"
 {printf("TOKEN_MAINFUNC         %s\n", yytext);return TOKEN_MAINFUNC;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 33 "run.l"
+#line 33 "lex_code.l"
 {printf("TOKEN_ID               %s\n", yytext);return TOKEN_ID;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 34 "run.l"
+#line 34 "lex_code.l"
 {printf("TOKEN_ARITHMATICOP_ADD     %s\n", yytext);return TOKEN_ARITHMATICOP_ADD;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 35 "run.l"
+#line 35 "lex_code.l"
 {printf("TOKEN_ARITHMATICOP_SUB    %s\n", yytext);return TOKEN_ARITHMATICOP_SUB;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 36 "run.l"
+#line 36 "lex_code.l"
 {printf("TOKEN_ARITHMATICOP_MUL     %s\n", yytext);return TOKEN_ARITHMATICOP_MUL;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 37 "run.l"
+#line 37 "lex_code.l"
 {printf("TOKEN_ARITHMATICOP_DIV     %s\n", yytext);return TOKEN_ARITHMATICOP_DIV;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 38 "run.l"
-{printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);return TOKEN_ARITHMATICOP_REM}
+#line 38 "lex_code.l"
+{printf("TOKEN_ARITHMATICOP_REM     %s\n", yytext);return TOKEN_ARITHMATICOP_REM;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 39 "run.l"
+#line 39 "lex_code.l"
 {printf("TOKEN_CONDITIONOP_AND      %s\n", yytext);return TOKEN_CONDITIONOP_AND;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 40 "run.l"
+#line 40 "lex_code.l"
 {printf("TOKEN_CONDITIONOP_OR      %s\n", yytext);return TOKEN_CONDITIONOP_OR;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 41 "run.l"
+#line 41 "lex_code.l"
 {printf("TOKEN_RELATIONOP_SE       %s\n", yytext);return TOKEN_RELATIONOP_SE;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 42 "run.l"
+#line 42 "lex_code.l"
 {printf("TOKEN_RELATIONOP_S       %s\n", yytext);return TOKEN_RELATIONOP_S;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 43 "run.l"
+#line 43 "lex_code.l"
 {printf("TOKEN_RELATIONOP_B       %s\n", yytext);return TOKEN_RELATIONOP_B;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 44 "run.l"
+#line 44 "lex_code.l"
 {printf("TOKEN_RELATIONOP_BE       %s\n", yytext);return TOKEN_RELATIONOP_BE;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 45 "run.l"
+#line 45 "lex_code.l"
 {printf("TOKEN_EQUALITYOP_NE       %s\n", yytext);return TOKEN_EQUALITYOP_NE;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 46 "run.l"
+#line 46 "lex_code.l"
 {printf("TOKEN_EQUALITYOP_E       %s\n", yytext);return TOKEN_EQUALITYOP_E;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 47 "run.l"
+#line 47 "lex_code.l"
 {printf("TOKEN_ASSIGNOP_ASS         %s\n", yytext);return TOKEN_ASSIGNOP_ASS;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 48 "run.l"
+#line 48 "lex_code.l"
 {printf("TOKEN_ASSIGNOP_ADD         %s\n", yytext);return TOKEN_ASSIGNOP_ADD;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 49 "run.l"
+#line 49 "lex_code.l"
 {printf("TOKEN_ASSIGNOP_SUB         %s\n", yytext);return TOKEN_ASSIGNOP_SUB;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 50 "run.l"
+#line 50 "lex_code.l"
 {printf("TOKEN_LOGICOP          %s\n", yytext);return TOKEN_LOGICOP;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 51 "run.l"
+#line 51 "lex_code.l"
 {printf("TOKEN_LP               %s\n", yytext);return TOKEN_LP;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 52 "run.l"
+#line 52 "lex_code.l"
 {printf("TOKEN_RP               %s\n", yytext);return TOKEN_RP;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 53 "run.l"
+#line 53 "lex_code.l"
 {printf("TOKEN_LCB              %s\n", yytext);return TOKEN_LCB;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 54 "run.l"
+#line 54 "lex_code.l"
 {printf("TOKEN_RCB              %s\n", yytext);return TOKEN_RCB;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 55 "run.l"
+#line 55 "lex_code.l"
 {printf("TOKEN_RB               %s\n", yytext);return TOKEN_RB;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 56 "run.l"
+#line 56 "lex_code.l"
 {printf("TOKEN_LB               %s\n", yytext);return TOKEN_LB;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 57 "run.l"
+#line 57 "lex_code.l"
 {printf("TOKEN_SEMICOLON        %s\n", yytext);return TOKEN_SEMICOLON;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 58 "run.l"
+#line 58 "lex_code.l"
 {printf("TOKEN_COMMA            %s\n", yytext);return TOKEN_COMMA;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 59 "run.l"
+#line 59 "lex_code.l"
 {printf("TOKEN_COMMENT          %s\n", yytext);return TOKEN_COMMENT;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 60 "run.l"
-{if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );return ERROR}
+#line 60 "lex_code.l"
+{if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 61 "run.l"
-{printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST; }
+#line 61 "lex_code.l"
+{printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 62 "run.l"
+#line 62 "lex_code.l"
 {printf("TOKEN_STRINGCONST      %s\n", yytext);return TOKEN_STRINGCONST;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 63 "run.l"
+#line 63 "lex_code.l"
 {printf("TOKEN_CHARCONST        %s\n", yytext);return TOKEN_CHARCONST;}
 	YY_BREAK
 case 47:
 /* rule 47 can match eol */
 YY_RULE_SETUP
-#line 64 "run.l"
+#line 64 "lex_code.l"
 {printf("TOKEN_WHITESPACE       [newline]\n");lineCounter += strlen(yytext);return TOKEN_WHITESPACE;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 65 "run.l"
+#line 65 "lex_code.l"
 {printf("TOKEN_WHITESPACE       [tab]\n");return TOKEN_WHITESPACE;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 66 "run.l"
+#line 66 "lex_code.l"
 {printf("TOKEN_WHITESPACE       [space]\n");return TOKEN_WHITESPACE;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 67 "run.l"
+#line 67 "lex_code.l"
 {printf("Error in line          %d : wrong id definition\n", lineCounter);return TOKEN_WHITESPACE;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 68 "run.l"
+#line 68 "lex_code.l"
 {printf("Error in line          %d\n", lineCounter);return TOKEN_WHITESPACE;}
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 70 "run.l"
+#line 70 "lex_code.l"
 ECHO;
 	YY_BREAK
-#line 1120 "lex.yy.c"
+#line 1121 "app_lex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2121,7 +2122,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 70 "run.l"
+#line 70 "lex_code.l"
 
 
 

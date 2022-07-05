@@ -130,7 +130,7 @@
     program:    // class program {}
                 TOKEN_CLASS TOKEN_PROGRAMCLASS TOKEN_LCB decl TOKEN_RCB
                 {
-                    printf("<program> %s %s %s %s %s\n", running_mode ?"TOKEN_CLASS":$1, running_mode?"TOKEN_PROGRAMCLASS":$2, running_running_mode?"TOKEN_LCB":$3, $4, running_mode?"TOKEN_RCB":$5);
+                    printf("<program> %s %s %s %s %s\n", running_mode ?"TOKEN_CLASS":$1, running_mode?"TOKEN_PROGRAMCLASS":$2, running_mode?"TOKEN_LCB":$3, $4, running_mode?"TOKEN_RCB":$5);
 
                 }
                 ;
@@ -219,9 +219,9 @@
             ;
 
     var_decl:   // int a,b,c;
-                type multi_id TOKEN_SEMICOLON {
-                    sprintf($$, "%s %s %s" , $1 , $2 , running_mode ? "TOKEN_SEMICOLON" : $3)
-
+                type multi_id TOKEN_SEMICOLON
+                {
+                    sprintf($$, "%s %s %s" , $1 , $2 , running_mode ? "TOKEN_SEMICOLON" : $3);
                 }
                 |/*epsilon*/ { }
                 ;
@@ -253,7 +253,7 @@
                 }
                 | TOKEN_CONTINUESTMT TOKEN_SEMICOLON //contineu;
                  {
-                    sprintf($$, "%s %s", running_mode ? "TOKEN_CONTINUESTMT" : $1 , running_mode ? "TOKEN_SEMICOLON" : $2)
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_CONTINUESTMT" : $1 , running_mode ? "TOKEN_SEMICOLON" : $2);
                 }
                 | block //{}
                 |/*epsilon*/ { }
@@ -547,7 +547,7 @@
 
 int main(int argc, char **argv)
 {
-    running_running_mode = *argv[1] == '1' ? 1 : 0;
+    running_mode = *argv[1] == '1' ? 1 : 0;
 
 	yyin = fopen(argv[2], "r");
 	yyout = fopen(argv[3], "w");
