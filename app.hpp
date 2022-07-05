@@ -104,7 +104,7 @@ union YYSTYPE
 {
 #line 19 "code_bison.y"
 
-    char str[50];
+    char str[1000];
     int number;
     
 

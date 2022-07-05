@@ -54,7 +54,7 @@
 "]"                                                         {printf("TOKEN_RB               %s\n", yytext);return TOKEN_RB;}
 "["                                                         {printf("TOKEN_LB               %s\n", yytext);return TOKEN_LB;}
 ";"                                                         {printf("TOKEN_SEMICOLON        %s\n", yytext);return TOKEN_SEMICOLON;}
-","                                                         {printf("TOKEN_COMMA            %s\n", yytext);}
+","                                                         {printf("TOKEN_COMMA            %s\n", yytext);return TOKEN_COMMA;}
 "//".*                                                      {printf("TOKEN_COMMENT          %s\n", yytext);}
 ("+"?"-"?[0-9]+)                                            {if(strtol(yytext, &ptr, 10) <= MAX_INT && strtol(yytext, &ptr,10) >= MIN_INT) {printf("TOKEN_DECIMALCONST     %s\n", yytext);return TOKEN_DECIMALCONST;} else printf("Error in line          %d: the value out of range\n", lineCounter   );}
 ("0x"[0-9a-fA-F]+)                                          {printf("TOKEN_HEXADECIMALCONST %s\n", yytext);return TOKEN_HEXADECIMALCONST;}

@@ -4,8 +4,15 @@ Terminals unused in grammar
     TOKEN_WHITESPACE
 
 
+Rules useless in parser due to conflicts
+
+   78 $@2: %empty
+
+
 State 14 conflicts: 1 shift/reduce
+State 48 conflicts: 1 reduce/reduce
 State 61 conflicts: 1 shift/reduce
+State 123 conflicts: 1 reduce/reduce
 
 
 Grammar
@@ -112,27 +119,32 @@ Grammar
    74 type: TOKEN_INTTYPE
    75     | TOKEN_BOOLEANTYPE
 
-   76 multi_id: id
-   77         | id TOKEN_COMMA multi_id
+   76 $@1: %empty
 
-   78 literal: int_literal
-   79        | char_literal
-   80        | bool_literal
+   77 multi_id: $@1 id
 
-   81 int_literal: decimal_literal
-   82            | hex_literal
+   78 $@2: %empty
 
-   83 id: TOKEN_ID
+   79 multi_id: $@2 id TOKEN_COMMA multi_id
 
-   84 decimal_literal: TOKEN_DECIMALCONST
+   80 literal: int_literal
+   81        | char_literal
+   82        | bool_literal
 
-   85 hex_literal: TOKEN_HEXADECIMALCONST
+   83 int_literal: decimal_literal
+   84            | hex_literal
 
-   86 bool_literal: TOKEN_BOOLEANCONST
+   85 id: TOKEN_ID
 
-   87 char_literal: TOKEN_CHARCONST
+   86 decimal_literal: TOKEN_DECIMALCONST
 
-   88 string_literal: TOKEN_STRINGCONST
+   87 hex_literal: TOKEN_HEXADECIMALCONST
+
+   88 bool_literal: TOKEN_BOOLEANCONST
+
+   89 char_literal: TOKEN_CHARCONST
+
+   90 string_literal: TOKEN_STRINGCONST
 
 
 Terminals, with rules where they appear
@@ -141,14 +153,14 @@ Terminals, with rules where they appear
     error (256)
     TOKEN_CLASS <str> (258) 1
     TOKEN_PROGRAMCLASS <str> (259) 1
-    TOKEN_ID <str> (260) 83
+    TOKEN_ID <str> (260) 85
     TOKEN_INTTYPE <str> (261) 74
     TOKEN_BOOLEANTYPE <str> (262) 75
     TOKEN_VOIDTYPE <str> (263) 12
     TOKEN_MAINFUNC <str> (264) 15
     TOKEN_LP <str> (265) 11 27 61 62 63
     TOKEN_RP <str> (266) 11 27 61 62 63
-    TOKEN_COMMA <str> (267) 7 8 17 18 19 28 67 68 71 77
+    TOKEN_COMMA <str> (267) 7 8 17 18 19 28 67 68 71 79
     TOKEN_SEMICOLON <str> (268) 6 23 25 26 29 30 31
     TOKEN_IFCONDITION <str> (269) 27
     TOKEN_LOOP <str> (270) 28
@@ -178,11 +190,11 @@ Terminals, with rules where they appear
     TOKEN_CONDITIONOP_AND <str> (294) 57
     TOKEN_CONDITIONOP_OR <str> (295) 58
     TOKEN_LOGICOP <str> (296) 60
-    TOKEN_DECIMALCONST <str> (297) 84
-    TOKEN_HEXADECIMALCONST <str> (298) 85
-    TOKEN_BOOLEANCONST <str> (299) 86
-    TOKEN_CHARCONST <str> (300) 87
-    TOKEN_STRINGCONST <str> (301) 88
+    TOKEN_DECIMALCONST <str> (297) 86
+    TOKEN_HEXADECIMALCONST <str> (298) 87
+    TOKEN_BOOLEANCONST <str> (299) 88
+    TOKEN_CHARCONST <str> (300) 89
+    TOKEN_STRINGCONST <str> (301) 90
     TOKEN_COMMENT <str> (302)
     TOKEN_WHITESPACE <str> (303)
 
@@ -197,7 +209,7 @@ Nonterminals, with rules where they appear
     decl <str> (51)
         on left: 2 3
         on right: 1 2
-    decl_method (52)
+    decl_method <str> (52)
         on left: 4 5
         on right: 3 4
     field_decl <str> (53)
@@ -267,31 +279,37 @@ Nonterminals, with rules where they appear
         on left: 74 75
         on right: 6 13 21 23
     multi_id <str> (75)
-        on left: 76 77
-        on right: 23 77
-    literal <str> (76)
-        on left: 78 79 80
-        on right: 45
-    int_literal <str> (77)
-        on left: 81 82
-        on right: 8 9 78
-    id <str> (78)
-        on left: 83
-        on right: 6 7 8 14 21 28 38 39 62 76 77
-    decimal_literal <str> (79)
-        on left: 84
-        on right: 81
-    hex_literal <str> (80)
-        on left: 85
-        on right: 82
-    bool_literal <str> (81)
-        on left: 86
-        on right: 80
-    char_literal <str> (82)
-        on left: 87
+        on left: 77 79
+        on right: 23 79
+    $@1 (76)
+        on left: 76
+        on right: 77
+    $@2 (77)
+        on left: 78
         on right: 79
-    string_literal <str> (83)
+    literal <str> (78)
+        on left: 80 81 82
+        on right: 45
+    int_literal <str> (79)
+        on left: 83 84
+        on right: 8 9 80
+    id <str> (80)
+        on left: 85
+        on right: 6 7 8 14 21 28 38 39 62 77 79
+    decimal_literal <str> (81)
+        on left: 86
+        on right: 83
+    hex_literal <str> (82)
+        on left: 87
+        on right: 84
+    bool_literal <str> (83)
         on left: 88
+        on right: 82
+    char_literal <str> (84)
+        on left: 89
+        on right: 81
+    string_literal <str> (85)
+        on left: 90
         on right: 63 73
 
 
@@ -469,9 +487,9 @@ State 18
 
 State 19
 
-   83 id: TOKEN_ID .
+   85 id: TOKEN_ID .
 
-    $default  reduce using rule 83 (id)
+    $default  reduce using rule 85 (id)
 
 
 State 20
@@ -592,16 +610,16 @@ State 31
 
 State 32
 
-   84 decimal_literal: TOKEN_DECIMALCONST .
+   86 decimal_literal: TOKEN_DECIMALCONST .
 
-    $default  reduce using rule 84 (decimal_literal)
+    $default  reduce using rule 86 (decimal_literal)
 
 
 State 33
 
-   85 hex_literal: TOKEN_HEXADECIMALCONST .
+   87 hex_literal: TOKEN_HEXADECIMALCONST .
 
-    $default  reduce using rule 85 (hex_literal)
+    $default  reduce using rule 87 (hex_literal)
 
 
 State 34
@@ -614,16 +632,16 @@ State 34
 
 State 35
 
-   81 int_literal: decimal_literal .
+   83 int_literal: decimal_literal .
 
-    $default  reduce using rule 81 (int_literal)
+    $default  reduce using rule 83 (int_literal)
 
 
 State 36
 
-   82 int_literal: hex_literal .
+   84 int_literal: hex_literal .
 
-    $default  reduce using rule 82 (int_literal)
+    $default  reduce using rule 84 (int_literal)
 
 
 State 37
@@ -745,10 +763,13 @@ State 48
 
    23 var_decl: type . multi_id TOKEN_SEMICOLON
 
-    TOKEN_ID  shift, and go to state 19
+    TOKEN_ID  reduce using rule 76 ($@1)
+    TOKEN_ID  [reduce using rule 78 ($@2)]
+    $default  reduce using rule 76 ($@1)
 
     multi_id  go to state 62
-    id        go to state 63
+    $@1       go to state 63
+    $@2       go to state 64
 
 
 State 49
@@ -759,7 +780,7 @@ State 49
     TOKEN_INTTYPE      shift, and go to state 6
     TOKEN_BOOLEANTYPE  shift, and go to state 7
 
-    arg   go to state 64
+    arg   go to state 65
     type  go to state 30
 
 
@@ -772,14 +793,14 @@ State 50
 
     $default  reduce using rule 10 (multi_field)
 
-    multi_field  go to state 65
+    multi_field  go to state 66
 
 
 State 51
 
    27 statement: TOKEN_IFCONDITION . TOKEN_RP expr TOKEN_LP else_stmt
 
-    TOKEN_RP  shift, and go to state 66
+    TOKEN_RP  shift, and go to state 67
 
 
 State 52
@@ -788,7 +809,7 @@ State 52
 
     TOKEN_ID  shift, and go to state 19
 
-    id  go to state 67
+    id  go to state 68
 
 
 State 53
@@ -796,49 +817,49 @@ State 53
    29 statement: TOKEN_RETURN . ret_stmt TOKEN_SEMICOLON
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
     $default  reduce using rule 35 (ret_stmt)
 
-    ret_stmt         go to state 73
-    location         go to state 74
-    expr             go to state 75
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    ret_stmt         go to state 74
+    location         go to state 75
+    expr             go to state 76
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 54
 
    30 statement: TOKEN_BREAKSTMT . TOKEN_SEMICOLON
 
-    TOKEN_SEMICOLON  shift, and go to state 81
+    TOKEN_SEMICOLON  shift, and go to state 82
 
 
 State 55
 
    31 statement: TOKEN_CONTINUESTMT . TOKEN_SEMICOLON
 
-    TOKEN_SEMICOLON  shift, and go to state 82
+    TOKEN_SEMICOLON  shift, and go to state 83
 
 
 State 56
 
    63 method_call: TOKEN_CALLOUT . TOKEN_LP string_literal multi_callout_args TOKEN_RP
 
-    TOKEN_LP  shift, and go to state 83
+    TOKEN_LP  shift, and go to state 84
 
 
 State 57
@@ -852,25 +873,25 @@ State 58
 
    22 block: TOKEN_LCB var_decl statement . TOKEN_RCB
 
-    TOKEN_RCB  shift, and go to state 84
+    TOKEN_RCB  shift, and go to state 85
 
 
 State 59
 
    25 statement: location . assign_op expr TOKEN_SEMICOLON
 
-    TOKEN_ASSIGNOP_ASS  shift, and go to state 85
-    TOKEN_ASSIGNOP_ADD  shift, and go to state 86
-    TOKEN_ASSIGNOP_SUB  shift, and go to state 87
+    TOKEN_ASSIGNOP_ASS  shift, and go to state 86
+    TOKEN_ASSIGNOP_ADD  shift, and go to state 87
+    TOKEN_ASSIGNOP_SUB  shift, and go to state 88
 
-    assign_op  go to state 88
+    assign_op  go to state 89
 
 
 State 60
 
    26 statement: method_call . TOKEN_SEMICOLON
 
-    TOKEN_SEMICOLON  shift, and go to state 89
+    TOKEN_SEMICOLON  shift, and go to state 90
 
 
 State 61
@@ -879,8 +900,8 @@ State 61
    39         | id . TOKEN_LB expr TOKEN_RB
    62 method_call: id . TOKEN_LP multi_expr TOKEN_RP
 
-    TOKEN_LP  shift, and go to state 90
-    TOKEN_LB  shift, and go to state 91
+    TOKEN_LP  shift, and go to state 91
+    TOKEN_LB  shift, and go to state 92
 
     TOKEN_LP  [reduce using rule 38 (location)]
     $default  reduce using rule 38 (location)
@@ -890,176 +911,184 @@ State 62
 
    23 var_decl: type multi_id . TOKEN_SEMICOLON
 
-    TOKEN_SEMICOLON  shift, and go to state 92
+    TOKEN_SEMICOLON  shift, and go to state 93
 
 
 State 63
 
-   76 multi_id: id .
-   77         | id . TOKEN_COMMA multi_id
+   77 multi_id: $@1 . id
 
-    TOKEN_COMMA  shift, and go to state 93
+    TOKEN_ID  shift, and go to state 19
 
-    $default  reduce using rule 76 (multi_id)
+    id  go to state 94
 
 
 State 64
 
+   79 multi_id: $@2 . id TOKEN_COMMA multi_id
+
+    TOKEN_ID  shift, and go to state 19
+
+    id  go to state 95
+
+
+State 65
+
    18 func_args: arg TOKEN_COMMA arg TOKEN_COMMA arg .
    19          | arg TOKEN_COMMA arg TOKEN_COMMA arg . TOKEN_COMMA arg
 
-    TOKEN_COMMA  shift, and go to state 94
+    TOKEN_COMMA  shift, and go to state 96
 
     $default  reduce using rule 18 (func_args)
 
 
-State 65
+State 66
 
     8 multi_field: TOKEN_LB int_literal TOKEN_RB TOKEN_COMMA id multi_field .
 
     $default  reduce using rule 8 (multi_field)
 
 
-State 66
+State 67
 
    27 statement: TOKEN_IFCONDITION TOKEN_RP . expr TOKEN_LP else_stmt
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 95
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 97
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
-
-
-State 67
-
-   28 statement: TOKEN_LOOP id . TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA expr block
-
-    TOKEN_ASSIGNOP_ASS  shift, and go to state 96
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 68
 
-   61 expr: TOKEN_LP . expr TOKEN_RP
+   28 statement: TOKEN_LOOP id . TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA expr block
 
-    TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
-    TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
-    TOKEN_DECIMALCONST      shift, and go to state 32
-    TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
-
-    location         go to state 74
-    expr             go to state 97
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
-    id               go to state 61
-    decimal_literal  go to state 35
-    hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    TOKEN_ASSIGNOP_ASS  shift, and go to state 98
 
 
 State 69
 
-   59 expr: TOKEN_ARITHMATICOP_SUB . expr
+   61 expr: TOKEN_LP . expr TOKEN_RP
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 98
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 99
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 70
 
-   60 expr: TOKEN_LOGICOP . expr
+   59 expr: TOKEN_ARITHMATICOP_SUB . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 99
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 100
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 71
 
-   86 bool_literal: TOKEN_BOOLEANCONST .
+   60 expr: TOKEN_LOGICOP . expr
 
-    $default  reduce using rule 86 (bool_literal)
+    TOKEN_ID                shift, and go to state 19
+    TOKEN_LP                shift, and go to state 69
+    TOKEN_CALLOUT           shift, and go to state 56
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
+    TOKEN_DECIMALCONST      shift, and go to state 32
+    TOKEN_HEXADECIMALCONST  shift, and go to state 33
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
+
+    location         go to state 75
+    expr             go to state 101
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
+    id               go to state 61
+    decimal_literal  go to state 35
+    hex_literal      go to state 36
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 72
 
-   87 char_literal: TOKEN_CHARCONST .
+   88 bool_literal: TOKEN_BOOLEANCONST .
 
-    $default  reduce using rule 87 (char_literal)
+    $default  reduce using rule 88 (bool_literal)
 
 
 State 73
 
-   29 statement: TOKEN_RETURN ret_stmt . TOKEN_SEMICOLON
+   89 char_literal: TOKEN_CHARCONST .
 
-    TOKEN_SEMICOLON  shift, and go to state 100
+    $default  reduce using rule 89 (char_literal)
 
 
 State 74
+
+   29 statement: TOKEN_RETURN ret_stmt . TOKEN_SEMICOLON
+
+    TOKEN_SEMICOLON  shift, and go to state 102
+
+
+State 75
 
    43 expr: location .
 
     $default  reduce using rule 43 (expr)
 
 
-State 75
+State 76
 
    34 ret_stmt: expr .
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -1076,227 +1105,231 @@ State 75
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
     $default  reduce using rule 34 (ret_stmt)
 
 
-State 76
+State 77
 
    44 expr: method_call .
 
     $default  reduce using rule 44 (expr)
 
 
-State 77
+State 78
 
    45 expr: literal .
 
     $default  reduce using rule 45 (expr)
 
 
-State 78
-
-   78 literal: int_literal .
-
-    $default  reduce using rule 78 (literal)
-
-
 State 79
 
-   80 literal: bool_literal .
+   80 literal: int_literal .
 
     $default  reduce using rule 80 (literal)
 
 
 State 80
 
-   79 literal: char_literal .
+   82 literal: bool_literal .
 
-    $default  reduce using rule 79 (literal)
+    $default  reduce using rule 82 (literal)
 
 
 State 81
+
+   81 literal: char_literal .
+
+    $default  reduce using rule 81 (literal)
+
+
+State 82
 
    30 statement: TOKEN_BREAKSTMT TOKEN_SEMICOLON .
 
     $default  reduce using rule 30 (statement)
 
 
-State 82
+State 83
 
    31 statement: TOKEN_CONTINUESTMT TOKEN_SEMICOLON .
 
     $default  reduce using rule 31 (statement)
 
 
-State 83
+State 84
 
    63 method_call: TOKEN_CALLOUT TOKEN_LP . string_literal multi_callout_args TOKEN_RP
 
-    TOKEN_STRINGCONST  shift, and go to state 114
+    TOKEN_STRINGCONST  shift, and go to state 116
 
-    string_literal  go to state 115
+    string_literal  go to state 117
 
 
-State 84
+State 85
 
    22 block: TOKEN_LCB var_decl statement TOKEN_RCB .
 
     $default  reduce using rule 22 (block)
 
 
-State 85
+State 86
 
    40 assign_op: TOKEN_ASSIGNOP_ASS .
 
     $default  reduce using rule 40 (assign_op)
 
 
-State 86
+State 87
 
    41 assign_op: TOKEN_ASSIGNOP_ADD .
 
     $default  reduce using rule 41 (assign_op)
 
 
-State 87
+State 88
 
    42 assign_op: TOKEN_ASSIGNOP_SUB .
 
     $default  reduce using rule 42 (assign_op)
 
 
-State 88
+State 89
 
    25 statement: location assign_op . expr TOKEN_SEMICOLON
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 116
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 118
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
-State 89
+State 90
 
    26 statement: method_call TOKEN_SEMICOLON .
 
     $default  reduce using rule 26 (statement)
 
 
-State 90
+State 91
 
    62 method_call: id TOKEN_LP . multi_expr TOKEN_RP
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
     $default  reduce using rule 65 (multi_expr)
 
-    location          go to state 74
-    expr              go to state 117
-    method_call       go to state 76
-    multi_expr        go to state 118
-    multi_expr_inner  go to state 119
-    literal           go to state 77
-    int_literal       go to state 78
+    location          go to state 75
+    expr              go to state 119
+    method_call       go to state 77
+    multi_expr        go to state 120
+    multi_expr_inner  go to state 121
+    literal           go to state 78
+    int_literal       go to state 79
     id                go to state 61
     decimal_literal   go to state 35
     hex_literal       go to state 36
-    bool_literal      go to state 79
-    char_literal      go to state 80
+    bool_literal      go to state 80
+    char_literal      go to state 81
 
 
-State 91
+State 92
 
    39 location: id TOKEN_LB . expr TOKEN_RB
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 120
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 122
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
-State 92
+State 93
 
    23 var_decl: type multi_id TOKEN_SEMICOLON .
 
     $default  reduce using rule 23 (var_decl)
 
 
-State 93
-
-   77 multi_id: id TOKEN_COMMA . multi_id
-
-    TOKEN_ID  shift, and go to state 19
-
-    multi_id  go to state 121
-    id        go to state 63
-
-
 State 94
+
+   77 multi_id: $@1 id .
+
+    $default  reduce using rule 77 (multi_id)
+
+
+State 95
+
+   79 multi_id: $@2 id . TOKEN_COMMA multi_id
+
+    TOKEN_COMMA  shift, and go to state 123
+
+
+State 96
 
    19 func_args: arg TOKEN_COMMA arg TOKEN_COMMA arg TOKEN_COMMA . arg
 
     TOKEN_INTTYPE      shift, and go to state 6
     TOKEN_BOOLEANTYPE  shift, and go to state 7
 
-    arg   go to state 122
+    arg   go to state 124
     type  go to state 30
 
 
-State 95
+State 97
 
    27 statement: TOKEN_IFCONDITION TOKEN_RP expr . TOKEN_LP else_stmt
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -1313,49 +1346,49 @@ State 95
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_LP                shift, and go to state 123
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_LP                shift, and go to state 125
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
 
-State 96
+State 98
 
    28 statement: TOKEN_LOOP id TOKEN_ASSIGNOP_ASS . expr TOKEN_COMMA expr block
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 124
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 126
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
-State 97
+State 99
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -1372,23 +1405,23 @@ State 97
    58     | expr . TOKEN_CONDITIONOP_OR expr
    61     | TOKEN_LP expr . TOKEN_RP
 
-    TOKEN_RP                shift, and go to state 125
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_RP                shift, and go to state 127
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
 
-State 98
+State 100
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -1405,18 +1438,18 @@ State 98
    58     | expr . TOKEN_CONDITIONOP_OR expr
    59     | TOKEN_ARITHMATICOP_SUB expr .
 
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 59 (expr)
 
 
-State 99
+State 101
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -1436,370 +1469,370 @@ State 99
     $default  reduce using rule 60 (expr)
 
 
-State 100
+State 102
 
    29 statement: TOKEN_RETURN ret_stmt TOKEN_SEMICOLON .
 
     $default  reduce using rule 29 (statement)
 
 
-State 101
+State 103
 
    46 expr: expr TOKEN_ARITHMATICOP_ADD . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 126
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
-    id               go to state 61
-    decimal_literal  go to state 35
-    hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
-
-
-State 102
-
-   47 expr: expr TOKEN_ARITHMATICOP_SUB . expr
-
-    TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
-    TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
-    TOKEN_DECIMALCONST      shift, and go to state 32
-    TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
-
-    location         go to state 74
-    expr             go to state 127
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
-    id               go to state 61
-    decimal_literal  go to state 35
-    hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
-
-
-State 103
-
-   49 expr: expr TOKEN_ARITHMATICOP_DIV . expr
-
-    TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
-    TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
-    TOKEN_DECIMALCONST      shift, and go to state 32
-    TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
-
-    location         go to state 74
+    location         go to state 75
     expr             go to state 128
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 104
 
-   48 expr: expr TOKEN_ARITHMATICOP_MUL . expr
+   47 expr: expr TOKEN_ARITHMATICOP_SUB . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 129
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 105
 
-   50 expr: expr TOKEN_ARITHMATICOP_REM . expr
+   49 expr: expr TOKEN_ARITHMATICOP_DIV . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 130
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 106
 
-   51 expr: expr TOKEN_RELATIONOP_SE . expr
+   48 expr: expr TOKEN_ARITHMATICOP_MUL . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 131
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 107
 
-   52 expr: expr TOKEN_RELATIONOP_S . expr
+   50 expr: expr TOKEN_ARITHMATICOP_REM . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 132
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 108
 
-   54 expr: expr TOKEN_RELATIONOP_BE . expr
+   51 expr: expr TOKEN_RELATIONOP_SE . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 133
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 109
 
-   53 expr: expr TOKEN_RELATIONOP_B . expr
+   52 expr: expr TOKEN_RELATIONOP_S . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 134
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 110
 
-   55 expr: expr TOKEN_EQUALITYOP_E . expr
+   54 expr: expr TOKEN_RELATIONOP_BE . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 135
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 111
 
-   56 expr: expr TOKEN_EQUALITYOP_NE . expr
+   53 expr: expr TOKEN_RELATIONOP_B . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 136
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 112
 
-   57 expr: expr TOKEN_CONDITIONOP_AND . expr
+   55 expr: expr TOKEN_EQUALITYOP_E . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 137
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 113
 
-   58 expr: expr TOKEN_CONDITIONOP_OR . expr
+   56 expr: expr TOKEN_EQUALITYOP_NE . expr
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
+    location         go to state 75
     expr             go to state 138
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 114
 
-   88 string_literal: TOKEN_STRINGCONST .
+   57 expr: expr TOKEN_CONDITIONOP_AND . expr
 
-    $default  reduce using rule 88 (string_literal)
+    TOKEN_ID                shift, and go to state 19
+    TOKEN_LP                shift, and go to state 69
+    TOKEN_CALLOUT           shift, and go to state 56
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
+    TOKEN_DECIMALCONST      shift, and go to state 32
+    TOKEN_HEXADECIMALCONST  shift, and go to state 33
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
+
+    location         go to state 75
+    expr             go to state 139
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
+    id               go to state 61
+    decimal_literal  go to state 35
+    hex_literal      go to state 36
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 115
 
-   63 method_call: TOKEN_CALLOUT TOKEN_LP string_literal . multi_callout_args TOKEN_RP
+   58 expr: expr TOKEN_CONDITIONOP_OR . expr
 
-    TOKEN_COMMA  shift, and go to state 139
+    TOKEN_ID                shift, and go to state 19
+    TOKEN_LP                shift, and go to state 69
+    TOKEN_CALLOUT           shift, and go to state 56
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
+    TOKEN_DECIMALCONST      shift, and go to state 32
+    TOKEN_HEXADECIMALCONST  shift, and go to state 33
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    $default  reduce using rule 69 (multi_callout_args)
-
-    multi_callout_args  go to state 140
+    location         go to state 75
+    expr             go to state 140
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
+    id               go to state 61
+    decimal_literal  go to state 35
+    hex_literal      go to state 36
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
 State 116
+
+   90 string_literal: TOKEN_STRINGCONST .
+
+    $default  reduce using rule 90 (string_literal)
+
+
+State 117
+
+   63 method_call: TOKEN_CALLOUT TOKEN_LP string_literal . multi_callout_args TOKEN_RP
+
+    TOKEN_COMMA  shift, and go to state 141
+
+    $default  reduce using rule 69 (multi_callout_args)
+
+    multi_callout_args  go to state 142
+
+
+State 118
 
    25 statement: location assign_op expr . TOKEN_SEMICOLON
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -1816,23 +1849,23 @@ State 116
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_SEMICOLON         shift, and go to state 141
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_SEMICOLON         shift, and go to state 143
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
 
-State 117
+State 119
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -1850,39 +1883,39 @@ State 117
    66 multi_expr_inner: expr .
    67                 | expr . TOKEN_COMMA multi_expr_inner
 
-    TOKEN_COMMA             shift, and go to state 142
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_COMMA             shift, and go to state 144
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
     $default  reduce using rule 66 (multi_expr_inner)
 
 
-State 118
+State 120
 
    62 method_call: id TOKEN_LP multi_expr . TOKEN_RP
 
-    TOKEN_RP  shift, and go to state 143
+    TOKEN_RP  shift, and go to state 145
 
 
-State 119
+State 121
 
    64 multi_expr: multi_expr_inner .
 
     $default  reduce using rule 64 (multi_expr)
 
 
-State 120
+State 122
 
    39 location: id TOKEN_LB expr . TOKEN_RB
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -1899,48 +1932,54 @@ State 120
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_RB                shift, and go to state 144
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_RB                shift, and go to state 146
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
 
-State 121
+State 123
 
-   77 multi_id: id TOKEN_COMMA multi_id .
+   79 multi_id: $@2 id TOKEN_COMMA . multi_id
 
-    $default  reduce using rule 77 (multi_id)
+    TOKEN_ID  reduce using rule 76 ($@1)
+    TOKEN_ID  [reduce using rule 78 ($@2)]
+    $default  reduce using rule 76 ($@1)
+
+    multi_id  go to state 147
+    $@1       go to state 63
+    $@2       go to state 64
 
 
-State 122
+State 124
 
    19 func_args: arg TOKEN_COMMA arg TOKEN_COMMA arg TOKEN_COMMA arg .
 
     $default  reduce using rule 19 (func_args)
 
 
-State 123
+State 125
 
    27 statement: TOKEN_IFCONDITION TOKEN_RP expr TOKEN_LP . else_stmt
 
-    TOKEN_ELSECONDITION  shift, and go to state 145
+    TOKEN_ELSECONDITION  shift, and go to state 148
 
     $default  reduce using rule 37 (else_stmt)
 
-    else_stmt  go to state 146
+    else_stmt  go to state 149
 
 
-State 124
+State 126
 
    28 statement: TOKEN_LOOP id TOKEN_ASSIGNOP_ASS expr . TOKEN_COMMA expr block
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -1957,30 +1996,30 @@ State 124
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_COMMA             shift, and go to state 147
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_COMMA             shift, and go to state 150
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
 
-State 125
+State 127
 
    61 expr: TOKEN_LP expr TOKEN_RP .
 
     $default  reduce using rule 61 (expr)
 
 
-State 126
+State 128
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    46     | expr TOKEN_ARITHMATICOP_ADD expr .
@@ -1997,18 +2036,18 @@ State 126
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 46 (expr)
 
 
-State 127
+State 129
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2025,18 +2064,18 @@ State 127
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 47 (expr)
 
 
-State 128
+State 130
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2053,20 +2092,20 @@ State 128
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 49 (expr)
 
 
-State 129
+State 131
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2083,20 +2122,20 @@ State 129
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 48 (expr)
 
 
-State 130
+State 132
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2113,17 +2152,17 @@ State 130
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_RELATIONOP_SE  shift, and go to state 106
-    TOKEN_RELATIONOP_S   shift, and go to state 107
-    TOKEN_RELATIONOP_BE  shift, and go to state 108
-    TOKEN_RELATIONOP_B   shift, and go to state 109
-    TOKEN_EQUALITYOP_E   shift, and go to state 110
-    TOKEN_EQUALITYOP_NE  shift, and go to state 111
+    TOKEN_RELATIONOP_SE  shift, and go to state 108
+    TOKEN_RELATIONOP_S   shift, and go to state 109
+    TOKEN_RELATIONOP_BE  shift, and go to state 110
+    TOKEN_RELATIONOP_B   shift, and go to state 111
+    TOKEN_EQUALITYOP_E   shift, and go to state 112
+    TOKEN_EQUALITYOP_NE  shift, and go to state 113
 
     $default  reduce using rule 50 (expr)
 
 
-State 131
+State 133
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2143,7 +2182,7 @@ State 131
     $default  reduce using rule 51 (expr)
 
 
-State 132
+State 134
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2163,7 +2202,7 @@ State 132
     $default  reduce using rule 52 (expr)
 
 
-State 133
+State 135
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2183,7 +2222,7 @@ State 133
     $default  reduce using rule 54 (expr)
 
 
-State 134
+State 136
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2203,7 +2242,7 @@ State 134
     $default  reduce using rule 53 (expr)
 
 
-State 135
+State 137
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2220,15 +2259,15 @@ State 135
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_RELATIONOP_SE  shift, and go to state 106
-    TOKEN_RELATIONOP_S   shift, and go to state 107
-    TOKEN_RELATIONOP_BE  shift, and go to state 108
-    TOKEN_RELATIONOP_B   shift, and go to state 109
+    TOKEN_RELATIONOP_SE  shift, and go to state 108
+    TOKEN_RELATIONOP_S   shift, and go to state 109
+    TOKEN_RELATIONOP_BE  shift, and go to state 110
+    TOKEN_RELATIONOP_B   shift, and go to state 111
 
     $default  reduce using rule 55 (expr)
 
 
-State 136
+State 138
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2245,16 +2284,16 @@ State 136
    57     | expr . TOKEN_CONDITIONOP_AND expr
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_RELATIONOP_SE  shift, and go to state 106
-    TOKEN_RELATIONOP_S   shift, and go to state 107
-    TOKEN_RELATIONOP_BE  shift, and go to state 108
-    TOKEN_RELATIONOP_B   shift, and go to state 109
-    TOKEN_EQUALITYOP_E   shift, and go to state 110
+    TOKEN_RELATIONOP_SE  shift, and go to state 108
+    TOKEN_RELATIONOP_S   shift, and go to state 109
+    TOKEN_RELATIONOP_BE  shift, and go to state 110
+    TOKEN_RELATIONOP_B   shift, and go to state 111
+    TOKEN_EQUALITYOP_E   shift, and go to state 112
 
     $default  reduce using rule 56 (expr)
 
 
-State 137
+State 139
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2271,22 +2310,22 @@ State 137
    57     | expr TOKEN_CONDITIONOP_AND expr .
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
 
     $default  reduce using rule 57 (expr)
 
 
-State 138
+State 140
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2303,150 +2342,157 @@ State 138
    58     | expr . TOKEN_CONDITIONOP_OR expr
    58     | expr TOKEN_CONDITIONOP_OR expr .
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
 
     $default  reduce using rule 58 (expr)
 
 
-State 139
+State 141
 
    68 multi_callout_args: TOKEN_COMMA . multi_callout_args_inner
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
-    TOKEN_STRINGCONST       shift, and go to state 114
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
+    TOKEN_STRINGCONST       shift, and go to state 116
 
-    location                  go to state 74
-    expr                      go to state 148
-    method_call               go to state 76
-    multi_callout_args_inner  go to state 149
-    callout_args              go to state 150
-    literal                   go to state 77
-    int_literal               go to state 78
+    location                  go to state 75
+    expr                      go to state 151
+    method_call               go to state 77
+    multi_callout_args_inner  go to state 152
+    callout_args              go to state 153
+    literal                   go to state 78
+    int_literal               go to state 79
     id                        go to state 61
     decimal_literal           go to state 35
     hex_literal               go to state 36
-    bool_literal              go to state 79
-    char_literal              go to state 80
-    string_literal            go to state 151
+    bool_literal              go to state 80
+    char_literal              go to state 81
+    string_literal            go to state 154
 
 
-State 140
+State 142
 
    63 method_call: TOKEN_CALLOUT TOKEN_LP string_literal multi_callout_args . TOKEN_RP
 
-    TOKEN_RP  shift, and go to state 152
+    TOKEN_RP  shift, and go to state 155
 
 
-State 141
+State 143
 
    25 statement: location assign_op expr TOKEN_SEMICOLON .
 
     $default  reduce using rule 25 (statement)
 
 
-State 142
+State 144
 
    67 multi_expr_inner: expr TOKEN_COMMA . multi_expr_inner
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location          go to state 74
-    expr              go to state 117
-    method_call       go to state 76
-    multi_expr_inner  go to state 153
-    literal           go to state 77
-    int_literal       go to state 78
+    location          go to state 75
+    expr              go to state 119
+    method_call       go to state 77
+    multi_expr_inner  go to state 156
+    literal           go to state 78
+    int_literal       go to state 79
     id                go to state 61
     decimal_literal   go to state 35
     hex_literal       go to state 36
-    bool_literal      go to state 79
-    char_literal      go to state 80
+    bool_literal      go to state 80
+    char_literal      go to state 81
 
 
-State 143
+State 145
 
    62 method_call: id TOKEN_LP multi_expr TOKEN_RP .
 
     $default  reduce using rule 62 (method_call)
 
 
-State 144
+State 146
 
    39 location: id TOKEN_LB expr TOKEN_RB .
 
     $default  reduce using rule 39 (location)
 
 
-State 145
+State 147
+
+   79 multi_id: $@2 id TOKEN_COMMA multi_id .
+
+    $default  reduce using rule 79 (multi_id)
+
+
+State 148
 
    36 else_stmt: TOKEN_ELSECONDITION . block
 
     TOKEN_LCB  shift, and go to state 43
 
-    block  go to state 154
+    block  go to state 157
 
 
-State 146
+State 149
 
    27 statement: TOKEN_IFCONDITION TOKEN_RP expr TOKEN_LP else_stmt .
 
     $default  reduce using rule 27 (statement)
 
 
-State 147
+State 150
 
    28 statement: TOKEN_LOOP id TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA . expr block
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
 
-    location         go to state 74
-    expr             go to state 155
-    method_call      go to state 76
-    literal          go to state 77
-    int_literal      go to state 78
+    location         go to state 75
+    expr             go to state 158
+    method_call      go to state 77
+    literal          go to state 78
+    int_literal      go to state 79
     id               go to state 61
     decimal_literal  go to state 35
     hex_literal      go to state 36
-    bool_literal     go to state 79
-    char_literal     go to state 80
+    bool_literal     go to state 80
+    char_literal     go to state 81
 
 
-State 148
+State 151
 
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
    47     | expr . TOKEN_ARITHMATICOP_SUB expr
@@ -2463,69 +2509,69 @@ State 148
    58     | expr . TOKEN_CONDITIONOP_OR expr
    72 callout_args: expr .
 
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
     $default  reduce using rule 72 (callout_args)
 
 
-State 149
+State 152
 
    68 multi_callout_args: TOKEN_COMMA multi_callout_args_inner .
 
     $default  reduce using rule 68 (multi_callout_args)
 
 
-State 150
+State 153
 
    70 multi_callout_args_inner: callout_args .
    71                         | callout_args . TOKEN_COMMA multi_callout_args_inner
 
-    TOKEN_COMMA  shift, and go to state 156
+    TOKEN_COMMA  shift, and go to state 159
 
     $default  reduce using rule 70 (multi_callout_args_inner)
 
 
-State 151
+State 154
 
    73 callout_args: string_literal .
 
     $default  reduce using rule 73 (callout_args)
 
 
-State 152
+State 155
 
    63 method_call: TOKEN_CALLOUT TOKEN_LP string_literal multi_callout_args TOKEN_RP .
 
     $default  reduce using rule 63 (method_call)
 
 
-State 153
+State 156
 
    67 multi_expr_inner: expr TOKEN_COMMA multi_expr_inner .
 
     $default  reduce using rule 67 (multi_expr_inner)
 
 
-State 154
+State 157
 
    36 else_stmt: TOKEN_ELSECONDITION block .
 
     $default  reduce using rule 36 (else_stmt)
 
 
-State 155
+State 158
 
    28 statement: TOKEN_LOOP id TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA expr . block
    46 expr: expr . TOKEN_ARITHMATICOP_ADD expr
@@ -2543,61 +2589,61 @@ State 155
    58     | expr . TOKEN_CONDITIONOP_OR expr
 
     TOKEN_LCB               shift, and go to state 43
-    TOKEN_ARITHMATICOP_ADD  shift, and go to state 101
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 102
-    TOKEN_ARITHMATICOP_DIV  shift, and go to state 103
-    TOKEN_ARITHMATICOP_MUL  shift, and go to state 104
-    TOKEN_ARITHMATICOP_REM  shift, and go to state 105
-    TOKEN_RELATIONOP_SE     shift, and go to state 106
-    TOKEN_RELATIONOP_S      shift, and go to state 107
-    TOKEN_RELATIONOP_BE     shift, and go to state 108
-    TOKEN_RELATIONOP_B      shift, and go to state 109
-    TOKEN_EQUALITYOP_E      shift, and go to state 110
-    TOKEN_EQUALITYOP_NE     shift, and go to state 111
-    TOKEN_CONDITIONOP_AND   shift, and go to state 112
-    TOKEN_CONDITIONOP_OR    shift, and go to state 113
+    TOKEN_ARITHMATICOP_ADD  shift, and go to state 103
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 104
+    TOKEN_ARITHMATICOP_DIV  shift, and go to state 105
+    TOKEN_ARITHMATICOP_MUL  shift, and go to state 106
+    TOKEN_ARITHMATICOP_REM  shift, and go to state 107
+    TOKEN_RELATIONOP_SE     shift, and go to state 108
+    TOKEN_RELATIONOP_S      shift, and go to state 109
+    TOKEN_RELATIONOP_BE     shift, and go to state 110
+    TOKEN_RELATIONOP_B      shift, and go to state 111
+    TOKEN_EQUALITYOP_E      shift, and go to state 112
+    TOKEN_EQUALITYOP_NE     shift, and go to state 113
+    TOKEN_CONDITIONOP_AND   shift, and go to state 114
+    TOKEN_CONDITIONOP_OR    shift, and go to state 115
 
-    block  go to state 157
+    block  go to state 160
 
 
-State 156
+State 159
 
    71 multi_callout_args_inner: callout_args TOKEN_COMMA . multi_callout_args_inner
 
     TOKEN_ID                shift, and go to state 19
-    TOKEN_LP                shift, and go to state 68
+    TOKEN_LP                shift, and go to state 69
     TOKEN_CALLOUT           shift, and go to state 56
-    TOKEN_ARITHMATICOP_SUB  shift, and go to state 69
-    TOKEN_LOGICOP           shift, and go to state 70
+    TOKEN_ARITHMATICOP_SUB  shift, and go to state 70
+    TOKEN_LOGICOP           shift, and go to state 71
     TOKEN_DECIMALCONST      shift, and go to state 32
     TOKEN_HEXADECIMALCONST  shift, and go to state 33
-    TOKEN_BOOLEANCONST      shift, and go to state 71
-    TOKEN_CHARCONST         shift, and go to state 72
-    TOKEN_STRINGCONST       shift, and go to state 114
+    TOKEN_BOOLEANCONST      shift, and go to state 72
+    TOKEN_CHARCONST         shift, and go to state 73
+    TOKEN_STRINGCONST       shift, and go to state 116
 
-    location                  go to state 74
-    expr                      go to state 148
-    method_call               go to state 76
-    multi_callout_args_inner  go to state 158
-    callout_args              go to state 150
-    literal                   go to state 77
-    int_literal               go to state 78
+    location                  go to state 75
+    expr                      go to state 151
+    method_call               go to state 77
+    multi_callout_args_inner  go to state 161
+    callout_args              go to state 153
+    literal                   go to state 78
+    int_literal               go to state 79
     id                        go to state 61
     decimal_literal           go to state 35
     hex_literal               go to state 36
-    bool_literal              go to state 79
-    char_literal              go to state 80
-    string_literal            go to state 151
+    bool_literal              go to state 80
+    char_literal              go to state 81
+    string_literal            go to state 154
 
 
-State 157
+State 160
 
    28 statement: TOKEN_LOOP id TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA expr block .
 
     $default  reduce using rule 28 (statement)
 
 
-State 158
+State 161
 
    71 multi_callout_args_inner: callout_args TOKEN_COMMA multi_callout_args_inner .
 
