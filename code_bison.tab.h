@@ -102,7 +102,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 15 "code_bison.y"
+#line 19 "code_bison.y"
 
     char str[50];
     int number;

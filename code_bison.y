@@ -13,6 +13,8 @@
     
 %}
 
+%define parse.lac full
+
 
 %union {
     char str[50];
@@ -87,7 +89,6 @@
 
 %type <str> program
 %type <str> decl
-%type <str> decl_fm
 %type <str> field_decl
 %type <str> multi_field
 %type <str> method_decl
@@ -117,6 +118,10 @@
 %type <str> bool_literal
 %type <str> char_literal
 %type <str> string_literal
+%type <str> id
+%type <str> multi_callout_args_inner
+
+
 
 
 
@@ -125,30 +130,27 @@
     program:    // class program {}
                 TOKEN_CLASS TOKEN_PROGRAMCLASS TOKEN_LCB decl TOKEN_RCB
                 {
-                    printf("<program> %s %s %s %s %s\n", running_mode ?"TOKEN_CLASS":$1, running_mode?"TOKEN_PROGRAMCLASS":$2, running_mode?"TOKEN_LCB":$3, $4, running_mode?"TOKEN_RCB":$5);
+                    printf("<program> %s %s %s %s %s\n", running_mode ?"TOKEN_CLASS":$1, running_mode?"TOKEN_PROGRAMCLASS":$2, running_running_mode?"TOKEN_LCB":$3, $4, running_mode?"TOKEN_RCB":$5);
 
                 }
                 ;
     decl:
-                decl_fm decl 
+                field_decl decl 
                 {
                     sprintf($$, "%s %s", $1, $2);
 
                 }
-                |/*epsilon*/ {  }
+                | decl_method {  }
                 ;
 
-    decl_fm:
-                field_decl 
-                {sprintf($$, "%s", $1);}
-                | method_decl 
-                {sprintf($$, "%s", $1);}
-                |/*epsilon*/ {  }
+    decl_method:
+                decl_method method_decl
+                | method_decl{  }
 
     field_decl: //int a,b,c[10],b,c;
                 type id multi_field TOKEN_SEMICOLON
                 {
-                    sprintf($$, "%s %s %s %s", $1, $2, $3, mode?"TOKEN_SEMICOLON":$4);
+                    sprintf($$, "%s %s %s %s", $1, $2, $3, running_mode?"TOKEN_SEMICOLON":$4);
 
                 }
                 ;
@@ -156,15 +158,15 @@
     multi_field://a,b,c[10],b,c[20]
                  TOKEN_COMMA id multi_field
                  {
-                    sprintf($$, "%s %s %s", mode ? "TOKEN_COMMA" : $1, $2, $3);
+                    sprintf($$, "%s %s %s", running_mode ? "TOKEN_COMMA" : $1, $2, $3);
                  }
                 | TOKEN_LB int_literal TOKEN_RB TOKEN_COMMA id multi_field
                 {
-                    sprintf($$, "%s %s %s %s %s %s", mode ? "TOKEN_LB" : $1, $2, mode ? "TOKEN_RB" : $3, mode ? "TOKEN_COMMA" : $4, $5, $6); 
+                    sprintf($$, "%s %s %s %s %s %s", running_mode ? "TOKEN_LB" : $1, $2, running_mode ? "TOKEN_RB" : $3, running_mode ? "TOKEN_COMMA" : $4, $5, $6); 
                 }
                 | TOKEN_LB int_literal TOKEN_RB
                 {
-                    sprintf($$, "%s %s %s", mode ? "TOKEN_LB" : $1, $2, mode ? "TOKEN_RB" : $3);
+                    sprintf($$, "%s %s %s", running_mode ? "TOKEN_LB" : $1, $2, running_mode ? "TOKEN_RB" : $3);
                 }
                 | /*epsilon*/ {  }
 
@@ -172,17 +174,17 @@
     method_decl://int main(){} // int func(int a, int b){}
                 header func_name TOKEN_LP func_args TOKEN_RP block
                 {
-                    sprintf($$, "%s %s %s %s %s %s", $1, $2, mode ? "TOKEN_LP" : $3, $4, mode ? "TOKEN_RP" : $5, $6);
+                    sprintf($$, "%s %s %s %s %s %s", $1, $2, running_mode ? "TOKEN_LP" : $3, $4, running_mode ? "TOKEN_RP" : $5, $6);
                 }
-                | /*epsilon*/ { }
     
     header:     //int//bool//void
-                type
+                
+                 TOKEN_VOIDTYPE{
+                    sprintf($$, "%s", running_mode ? "TOKEN_VOIDTYPE" : $1);
+                }
+                | type
                 {
                     sprintf($$, "%s", $1);
-                }
-                | TOKEN_VOIDTYPE{
-                    sprintf($$, "%s", mode ? "TOKEN_VOIDTYPE" : $1);
                 }
 
     func_name:  //func //main
@@ -193,14 +195,14 @@
                 }
                 | TOKEN_MAINFUNC
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_MAINFUNC" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_MAINFUNC" : $1);
                 }
 
     func_args:  //int a//int a, int b//...
                 arg {sprintf($$, "%s", $1);}
-                | arg TOKEN_COMMA arg { sprintf($$, "%s %s %s", $1, mode ? "TOKEN_COMMA" : $2, $3);}
-                | arg TOKEN_COMMA arg TOKEN_COMMA arg { sprintf($$, "%s %s %s %s %s", $1, mode ? "TOKEN_COMMA" : $2, $3, mode ? "TOKEN_COMMA" : $4, $5);}
-                | arg TOKEN_COMMA arg TOKEN_COMMA arg TOKEN_COMMA arg{sprintf($$, "%s %s %s %s %s %s %s", $1, mode ? "TOKEN_COMMA" : $2, $3, mode ? "TOKEN_COMMA" : $4, $5, mode ? "TOKEN_COMMA" : $6, $7);}
+                | arg TOKEN_COMMA arg { sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2, $3);}
+                | arg TOKEN_COMMA arg TOKEN_COMMA arg { sprintf($$, "%s %s %s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2, $3, running_mode ? "TOKEN_COMMA" : $4, $5);}
+                | arg TOKEN_COMMA arg TOKEN_COMMA arg TOKEN_COMMA arg{sprintf($$, "%s %s %s %s %s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2, $3, running_mode ? "TOKEN_COMMA" : $4, $5, running_mode ? "TOKEN_COMMA" : $6, $7);}
                 | /*epsilon*/ { }
                 ;
 
@@ -211,14 +213,14 @@
     block:  //{dec stm}
             TOKEN_LCB var_decl statement TOKEN_RCB
             {
-                sprintf($$ , "%s %s %s %s" , mode? "TOKEN_LCB" : $1 , $2 , $3 , mode ? "TOKEN_RCB" : $4);
+                sprintf($$ , "%s %s %s %s" , running_mode? "TOKEN_LCB" : $1 , $2 , $3 , running_mode ? "TOKEN_RCB" : $4);
 
             }
             ;
 
     var_decl:   // int a,b,c;
                 type multi_id TOKEN_SEMICOLON {
-                    sprintf($$, "%s %s %s" , $1 , $2 , mode ? "TOKEN_SEMICOLON" : $3)
+                    sprintf($$, "%s %s %s" , $1 , $2 , running_mode ? "TOKEN_SEMICOLON" : $3)
 
                 }
                 |/*epsilon*/ { }
@@ -227,31 +229,31 @@
     statement:
                 location assign_op expr TOKEN_SEMICOLON // a = 2;//a[3]=b//...
                 {
-                    sprintf($$, "%s %s %s %s", $1 , $2 , $3 , mode ? "TOKEN_SEMICOLON" : $4);
+                    sprintf($$, "%s %s %s %s", $1 , $2 , $3 , running_mode ? "TOKEN_SEMICOLON" : $4);
                 }
                 | method_call TOKEN_SEMICOLON //callout(...)//func(...)
                 {
-                    sprintf($$, "%s %s", $1, mode ? "TOKEN_SEMICOLON" : $2);
+                    sprintf($$, "%s %s", $1, running_mode ? "TOKEN_SEMICOLON" : $2);
                 }
                 | TOKEN_IFCONDITION TOKEN_RP expr TOKEN_LP else_stmt //if(){} else{}
                 {
-                    sprintf($$ , "%s %s %s %s %s", mode ? "TOKEN_IFCONDITION" : $1 , mode ? "TOKEN_RP" : $2 , $3 , mode ? "TOKEN_LP": $4 , $5);
+                    sprintf($$ , "%s %s %s %s %s", running_mode ? "TOKEN_IFCONDITION" : $1 , running_mode ? "TOKEN_RP" : $2 , $3 , running_mode ? "TOKEN_LP": $4 , $5);
                 }
                 | TOKEN_LOOP id TOKEN_ASSIGNOP_ASS expr TOKEN_COMMA expr block // for i=0 , 10 {}
                 {
-                    sprintf($$, "%s %s %s %s %s %s %s", mode ? "TOKEN_LOOP" : $1, $2, mode ? "TOKEN_ASSIGNOP_ASS" : $3, $4, mode ? "TOKEN_COMMA" : $5, $6, $7);
+                    sprintf($$, "%s %s %s %s %s %s %s", running_mode ? "TOKEN_LOOP" : $1, $2, running_mode ? "TOKEN_ASSIGNOP_ASS" : $3, $4, running_mode ? "TOKEN_COMMA" : $5, $6, $7);
                 }
                 | TOKEN_RETURN ret_stmt TOKEN_SEMICOLON //return 20;
                 {
-                    sprintf($$, "%s %s %s", mode ? "TOKEN_RETURN" : $1, $2, mode ? "TOKEN_SEMICOLON" : $3);
+                    sprintf($$, "%s %s %s", running_mode ? "TOKEN_RETURN" : $1, $2, running_mode ? "TOKEN_SEMICOLON" : $3);
                 }
                 | TOKEN_BREAKSTMT TOKEN_SEMICOLON //break;
                 {
-                    sprintf($$, "%s %s", mode ? "TOKEN_BREAKSTMT" : $1, mode ? "TOKEN_SEMICOLON" : $2);
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_BREAKSTMT" : $1, running_mode ? "TOKEN_SEMICOLON" : $2);
                 }
                 | TOKEN_CONTINUESTMT TOKEN_SEMICOLON //contineu;
                  {
-                    sprintf($$, "%s %s", mode ? "TOKEN_CONTINUESTMT" : $1 , mode ? "TOKEN_SEMICOLON" : $2)
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_CONTINUESTMT" : $1 , running_mode ? "TOKEN_SEMICOLON" : $2)
                 }
                 | block //{}
                 |/*epsilon*/ { }
@@ -267,7 +269,7 @@
     else_stmt:  //else {}
                 TOKEN_ELSECONDITION block 
                 {
-                    sprintf($$, "%s %s", mode ? "TOKEN_ELSECONDITION" : $1, $2);
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_ELSECONDITION" : $1, $2);
                 }
                 |/*epsilon*/ { }
                 ;
@@ -279,26 +281,27 @@
                 }
                 | id TOKEN_LB expr TOKEN_RB
                 {
-                    sprintf($$, "%s %s %s %s", $1, mode ? "TOKEN_LB" : $2, $3, mode ? "TOKEN_RB" : $4);
+                    sprintf($$, "%s %s %s %s", $1, running_mode ? "TOKEN_LB" : $2, $3, running_mode ? "TOKEN_RB" : $4);
                 }
                 ;
-                
-    /* location_helper:
+/*                 
+     location_helper:
                 TOKEN_LB expr TOKEN_RB
-                | /*epsilon*/ { } */
+                |  { } 
+                 */
 
     assign_op:
                 TOKEN_ASSIGNOP_ASS
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_ASSIGNOP_ASS" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_ASSIGNOP_ASS" : $1);
                 }
                 | TOKEN_ASSIGNOP_ADD
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_ASSIGNOP_ADD" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_ASSIGNOP_ADD" : $1);
                 }
                 | TOKEN_ASSIGNOP_SUB
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_ASSIGNOP_SUB" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_ASSIGNOP_SUB" : $1);
 
                 }
                 ;
@@ -318,67 +321,67 @@
                 }
                 | expr TOKEN_ARITHMATICOP_ADD expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_ARITHMATICOP_ADD" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_ARITHMATICOP_ADD" : $2, $3);
                 }
                 | expr TOKEN_ARITHMATICOP_SUB expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_ARITHMATICOP_SUB" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_ARITHMATICOP_SUB" : $2, $3);
                 }
                 | expr TOKEN_ARITHMATICOP_MUL expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_ARITHMATICOP_MUL" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_ARITHMATICOP_MUL" : $2, $3);
                 }
                 | expr TOKEN_ARITHMATICOP_DIV expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_ARITHMATICOP_DIV" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_ARITHMATICOP_DIV" : $2, $3);
                 }
                 | expr TOKEN_ARITHMATICOP_REM expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_ARITHMATICOP_REM" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_ARITHMATICOP_REM" : $2, $3);
                 }
                 | expr TOKEN_RELATIONOP_SE expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_RELATIONOP_SE" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_RELATIONOP_SE" : $2, $3);
                 }
                 | expr TOKEN_RELATIONOP_S expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_RELATIONOP_S" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_RELATIONOP_S" : $2, $3);
                 }
                 | expr TOKEN_RELATIONOP_B expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_RELATIONOP_B" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_RELATIONOP_B" : $2, $3);
                 }
                 | expr TOKEN_RELATIONOP_BE expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_RELATIONOP_BE" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_RELATIONOP_BE" : $2, $3);
                 }
                 | expr TOKEN_EQUALITYOP_E expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_EQUALITYOP_E" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_EQUALITYOP_E" : $2, $3);
                 }
                 | expr TOKEN_EQUALITYOP_NE expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_EQUALITYOP_NE" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_EQUALITYOP_NE" : $2, $3);
                 }
                 | expr TOKEN_CONDITIONOP_AND expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_CONDITIONOP_AND" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_CONDITIONOP_AND" : $2, $3);
                 }         
                 | expr TOKEN_CONDITIONOP_OR expr
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_CONDITIONOP_OR" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_CONDITIONOP_OR" : $2, $3);
                 }
                 | TOKEN_ARITHMATICOP_SUB expr // -a
                 {
-                    sprintf($$, "%s %s", mode ? "TOKEN_ARITHMATICOP_SUB" : $1, $2);
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_ARITHMATICOP_SUB" : $1, $2);
                 }
                 | TOKEN_LOGICOP expr // !true
                 {
-                    sprintf($$, "%s %s", mode ? "TOKEN_LOGICOP" : $1, $2);
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_LOGICOP" : $1, $2);
                 }
                 | TOKEN_LP expr TOKEN_RP // (expr)
                 {
-                    sprintf($$, "%s %s %s", mode ? "TOKEN_LP" : $1, $2, mode ? "TOKEN_RP" : $3);
+                    sprintf($$, "%s %s %s", running_mode ? "TOKEN_LP" : $1, $2, running_mode ? "TOKEN_RP" : $3);
                 }
                 
 
@@ -387,11 +390,11 @@
     method_call:
                 id TOKEN_LP multi_expr TOKEN_RP //func(a,b,1)
                  {
-                    sprintf($$, "%s %s %s %s", $1, mode ? "TOKEN_LP" : $2, $3, mode ? "TOKEN_RP" : $4);
+                    sprintf($$, "%s %s %s %s", $1, running_mode ? "TOKEN_LP" : $2, $3, running_mode ? "TOKEN_RP" : $4);
                 }
                 | TOKEN_CALLOUT TOKEN_LP string_literal multi_callout_args TOKEN_RP //callout('strcmp','aab','bba')
                  {
-                    sprintf($$, "%s %s %s %s", $1, mode ? "TOKEN_LP" : $2, $3, mode ? "TOKEN_RP" : $4);
+                    sprintf($$, "%s %s %s %s", $1, running_mode ? "TOKEN_LP" : $2, $3, running_mode ? "TOKEN_RP" : $4);
                 }
                 ;
     
@@ -410,14 +413,14 @@
                 }
                 | expr TOKEN_COMMA multi_expr_inner
                 {      
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_COMMA" : $2 , $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2 , $3);
                 }
                 ;
 
     multi_callout_args:
                 TOKEN_COMMA multi_callout_args_inner
                 {
-                    sprintf($$, "%s %s", mode ? "TOKEN_COMMA" : $1, $2);
+                    sprintf($$, "%s %s", running_mode ? "TOKEN_COMMA" : $1, $2);
                 }
                 | /*epsilon*/ { }
                 ;
@@ -429,7 +432,7 @@
                 }
                 | callout_args TOKEN_COMMA multi_callout_args_inner
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_COMMA" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2, $3);
                 }
                 ;
 
@@ -448,11 +451,11 @@
     type:
                 TOKEN_INTTYPE
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_INTTYPE" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_INTTYPE" : $1);
                 }
                 | TOKEN_BOOLEANTYPE
                 {
-                    sprintf($$, "%s", mode ? "TOKEN_BOOLEANTYPE" : $1);
+                    sprintf($$, "%s", running_mode ? "TOKEN_BOOLEANTYPE" : $1);
                 }
                 ;
 
@@ -464,7 +467,7 @@
                 }
                 | id TOKEN_COMMA multi_id 
                 {
-                    sprintf($$, "%s %s %s", $1, mode ? "TOKEN_COMMA" : $2, $3);
+                    sprintf($$, "%s %s %s", $1, running_mode ? "TOKEN_COMMA" : $2, $3);
                 }
                 ;
    
@@ -497,37 +500,37 @@
                 TOKEN_ID
                 {
             
-                    sprintf($$ , "%s", mode ? "TOKEN_ID" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_ID" : $1);
                 }
                 ;
      decimal_literal:
                 TOKEN_DECIMALCONST
                 {
-                    sprintf($$ , "%s", mode ? "TOKEN_DECIMALCONST" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_DECIMALCONST" : $1);
                 }
                 ;
     hex_literal:
                 TOKEN_HEXADECIMALCONST
                 {
-                    sprintf($$ , "%s", mode ? "TOKEN_HEXADECIMALCONST" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_HEXADECIMALCONST" : $1);
                 }
                 ;
     bool_literal:
                 TOKEN_BOOLEANCONST
                 {
-                    sprintf($$ , "%s", mode ? "TOKEN_BOOLEANCONST" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_BOOLEANCONST" : $1);
                 }
                 ;
     char_literal:
                 TOKEN_CHARCONST
                 {
-                    sprintf($$ , "%s", mode ? "TOKEN_CHARCONST" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_CHARCONST" : $1);
                 }
                 ;
     string_literal:
                 TOKEN_STRINGCONST
                 {
-                    sprintf($$ , "%s", mode ? "TOKEN_STRINGCONST" : $1);
+                    sprintf($$ , "%s", running_mode ? "TOKEN_STRINGCONST" : $1);
                 }
                 ;
     
@@ -544,7 +547,7 @@
 
 int main(int argc, char **argv)
 {
-    running_mode = *argv[1] == '1' ? 1 : 0;
+    running_running_mode = *argv[1] == '1' ? 1 : 0;
 
 	yyin = fopen(argv[2], "r");
 	yyout = fopen(argv[3], "w");
